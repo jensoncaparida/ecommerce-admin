@@ -4,6 +4,9 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 import './globals.css';
 
+import { ModalProvider } from '@/providers/modalProvider';
+import { ToastProvider } from '@/providers/toastProvider';
+
 const font = Roboto_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -19,7 +22,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={font.className}>{children}</body>
+        <body className={font.className}>
+          <ToastProvider />
+          <ModalProvider />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
