@@ -6,6 +6,7 @@ import './globals.css';
 
 import { ModalProvider } from '@/providers/modalProvider';
 import { ToastProvider } from '@/providers/toastProvider';
+import { ThemeProvider } from '@/providers/themeProvider';
 
 const font = Roboto_Mono({ subsets: ['latin'] });
 
@@ -21,11 +22,18 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={font.className}>
           <ToastProvider />
           <ModalProvider />
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

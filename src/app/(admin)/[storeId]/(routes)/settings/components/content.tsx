@@ -8,6 +8,7 @@ import { NavTab } from '@/components/ui/navTab';
 import { GeneralTab } from './generalTab';
 import { Separator } from '@/components/ui/separator';
 import { DangerZoneTab } from './dangerZoneTab';
+import { Appearance } from './appearance';
 
 interface SettingsContentProps {
   initialData: Store;
@@ -23,7 +24,7 @@ export const SettingsContent = ({ initialData }: SettingsContentProps) => {
     {
       label: 'Appearance',
       value: 'appearance',
-      content: <div>Appearance</div>,
+      content: <Appearance />,
     },
     {
       label: 'Danger Zone',

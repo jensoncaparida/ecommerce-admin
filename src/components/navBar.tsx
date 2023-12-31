@@ -22,14 +22,7 @@ const NavBar = async () => {
     <div className="w-full h-[60px] border-b shadow-sm flex flex-row items-center justify-between px-10 ">
       <StoreSwitcher items={stores} />
       <MainNav />
-      <div className="flex item-center space-x-4">
-        <span className=" flex xl:hidden">
-          <UserButton afterSignOutUrl="/" />
-        </span>
-        <span className="hidden xl:flex">
-          <UserButton afterSignOutUrl="/" showName />
-        </span>
-      </div>
+      <UserButton afterSignOutUrl="/" />
     </div>
   );
 };
