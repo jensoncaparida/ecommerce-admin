@@ -7,18 +7,21 @@ export async function POST(req: Request) {
   try {
     const { userId } = auth();
 
-    const { name } = await req.json();
+    const body = await req.json();
+
+    const { name } = body;
 
     if (!userId) {
-      return new NextResponse('Unauthorized', {
-        status: 401,
+      return new NextResponse('Access Denied. Unauthenticated.', {
+        status: 403,
       });
     }
 
     if (!name) {
-      return new NextResponse('Store name is required.', {
-        status: 400,
-      });
+      return new NextResponse(
+        'Your request is missing a required parameter: "name".',
+        { status: 400 }
+      );
     }
 
     const store = await prisma.store.create({

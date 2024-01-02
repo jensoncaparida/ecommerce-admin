@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, usePathname } from 'next/navigation';
-import { LayoutDashboard, Settings } from 'lucide-react';
+import { LayoutDashboard, Settings, Folders } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -19,6 +19,12 @@ export function MainNav({
       label: 'Dashboard',
       active: path === `/${params.storeId}`,
       icon: LayoutDashboard,
+    },
+    {
+      href: `/${params.storeId}/banners`,
+      label: 'Banners',
+      active: path === `/${params.storeId}/banners` || path.includes('banners'),
+      icon: Folders,
     },
     {
       href: `/${params.storeId}/settings?tab=general`,

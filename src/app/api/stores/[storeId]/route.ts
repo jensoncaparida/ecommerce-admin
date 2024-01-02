@@ -8,14 +8,29 @@ export async function PATCH(
 ) {
   try {
     const { userId } = auth();
-    const { name } = await req.json();
+
+    const body = await req.json();
+
+    const { name } = body;
 
     if (!userId) {
-      return new NextResponse('Unauthenticated', { status: 401 });
+      return new NextResponse('Access Denied. Unauthenticated.', {
+        status: 403,
+      });
+    }
+
+    if (!params.storeId) {
+      return new NextResponse(
+        'The request could not be processed because the "storeId" parameter is missing.',
+        { status: 400 }
+      );
     }
 
     if (!name) {
-      return new NextResponse('Name is required.', { status: 400 });
+      return new NextResponse(
+        'Your request is missing a required parameter: "name".',
+        { status: 400 }
+      );
     }
 
     const store = await prisma.store.updateMany({
@@ -43,7 +58,16 @@ export async function DELETE(
     const { userId } = auth();
 
     if (!userId) {
-      return new NextResponse('Unauthenticated', { status: 401 });
+      return new NextResponse('Access Denied. Unauthenticated.', {
+        status: 403,
+      });
+    }
+
+    if (!params.storeId) {
+      return new NextResponse(
+        'The request could not be processed because the "storeId" parameter is missing.',
+        { status: 400 }
+      );
     }
 
     const store = await prisma.store.deleteMany({
@@ -55,7 +79,7 @@ export async function DELETE(
 
     return NextResponse.json(store);
   } catch (error) {
-    console.log('[STORE_PATCH_ERROR]', error);
+    console.log('[STORE_DELETE_ERROR]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
