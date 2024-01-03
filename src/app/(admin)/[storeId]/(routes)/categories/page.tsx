@@ -33,7 +33,7 @@ async function CategoriesPage({
     relatedEntities: item.parent
       ? item.parent.name
       : item.children.map((child: any) => child.name).join(', '),
-    createdAt: format(item.createdAt, 'MMMM do, yyyy'),
+    createdAt: format(item.createdAt, 'MMMM do, yyyy | hh:mm a'),
   }));
 
   return (
