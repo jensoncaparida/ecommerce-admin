@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-    const { label, imageUrl } = body;
+    const { name, bannerId, isParent, parentId } = body;
 
     if (!userId) {
       return new NextResponse('Access Denied. Unauthenticated.', {
@@ -27,16 +27,30 @@ export async function POST(
       );
     }
 
-    if (!label) {
+    if (!name) {
       return new NextResponse(
-        'Your request is missing a required parameter: "label".',
+        'Your request is missing a required parameter: "name".',
         { status: 400 },
       );
     }
 
-    if (!imageUrl) {
+    if (!bannerId) {
       return new NextResponse(
-        'Your request is missing a required parameter: "imageUrl".',
+        'Your request is missing a required parameter: "bannerId".',
+        { status: 400 },
+      );
+    }
+
+    if (!isParent) {
+      return new NextResponse(
+        'Your request is missing a required parameter: "isParent".',
+        { status: 400 },
+      );
+    }
+
+    if (!parentId) {
+      return new NextResponse(
+        'Your request is missing a required parameter: "parentId".',
         { status: 400 },
       );
     }
@@ -49,20 +63,24 @@ export async function POST(
     });
 
     if (!storeByUserId) {
-      return new NextResponse('Access Denied. Unauthorized.', { status: 405 });
+      return new NextResponse('Access Denied. Unauthenticated.', {
+        status: 405,
+      });
     }
 
-    const banner = await prisma.banner.create({
+    const category = await prisma.category.create({
       data: {
-        label,
-        imageUrl,
+        name,
+        bannerId: bannerId || null,
+        isParent: isParent || false,
+        parentId: parentId || null,
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(banner);
+    return NextResponse.json(category);
   } catch (error) {
-    console.log('[BANNERS_POST]', error);
+    console.log('[CATEGORIES_POST]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
@@ -79,15 +97,15 @@ export async function GET(
       );
     }
 
-    const banners = await prisma.banner.findMany({
+    const categorys = await prisma.category.findMany({
       where: {
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(banners);
+    return NextResponse.json(categorys);
   } catch (error) {
-    console.log('[BANNERS_GET]', error);
+    console.log('[CATEGORIES_GET]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
