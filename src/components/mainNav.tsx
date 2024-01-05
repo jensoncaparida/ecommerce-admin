@@ -40,6 +40,11 @@ export function MainNav({
       active: path === `/${params.storeId}/sizes` || path.includes('sizes'),
     },
     {
+      href: `/${params.storeId}/colors`,
+      label: 'Colors',
+      active: path === `/${params.storeId}/colors` || path.includes('colors'),
+    },
+    {
       href: `/${params.storeId}/settings?tab=general`,
       label: 'Settings',
       active:
