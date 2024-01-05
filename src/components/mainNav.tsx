@@ -45,6 +45,12 @@ export function MainNav({
       active: path === `/${params.storeId}/colors` || path.includes('colors'),
     },
     {
+      href: `/${params.storeId}/products`,
+      label: 'Products',
+      active:
+        path === `/${params.storeId}/products` || path.includes('products'),
+    },
+    {
       href: `/${params.storeId}/settings?tab=general`,
       label: 'Settings',
       active:

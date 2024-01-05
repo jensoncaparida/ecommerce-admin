@@ -20,6 +20,7 @@ model Store {
   brands Brand[]
   sizes Size[]
   colors Color[]
+  products Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,6 +51,7 @@ model Category {
   parentId String
   parent Category? @relation("ParentChildren", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children Category[] @relation("ParentChildren")
+  products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -59,11 +61,40 @@ model Category {
   @@index([parentId])
 }
 
+model Product {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
+  categoryId String
+  category Category @relation(fields: [categoryId], references: [id])
+  name String
+  description String @db.Text
+  price Decimal
+  isFeatured Boolean @default(false)
+  isArchived Boolean @default(false)
+  brandId String
+  brand Brand @relation(fields: [brandId], references: [id])
+  sizeId String  
+  size Size @relation(fields: [sizeId], references: [id])
+  colorId String
+  color Color @relation(fields: [colorId], references: [id])
+  images Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([sizeId])
+  @@index([colorId])
+}
+
 model Brand {
   id String @id @default(uuid())
   storeId String
   store Store @relation(fields: [storeId], references: [id])
   name String
+  products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -77,6 +108,7 @@ model Size {
   store Store @relation(fields: [storeId], references: [id])
   name String
   value String
+  products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -90,9 +122,21 @@ model Color {
   store Store @relation(fields: [storeId], references: [id])
   name String
   value String
+  products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([name, value])
   @@index([storeId])
+}
+
+model Image {
+  id          String   @id @default(uuid())
+  productId   String   
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url         String   
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
 }

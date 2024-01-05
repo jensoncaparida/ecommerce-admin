@@ -33,7 +33,7 @@ export default async function AdminLayout({
   return (
     <>
       <NavBar />
-      {children}
+      <div className="pt-[60px]">{children}</div>
     </>
   );
 }
