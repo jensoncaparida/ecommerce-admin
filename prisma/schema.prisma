@@ -18,6 +18,7 @@ model Store {
   banners Banner[]
   categories Category[]
   brands Brand[]
+  sizes Size[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -66,5 +67,18 @@ model Brand {
   updatedAt DateTime @updatedAt
 
   @@unique([name, storeId])
+  @@index([storeId])
+}
+
+model Size {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
+  name String
+  value String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, value])
   @@index([storeId])
 }

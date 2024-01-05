@@ -35,6 +35,11 @@ export function MainNav({
       active: path === `/${params.storeId}/brands` || path.includes('brands'),
     },
     {
+      href: `/${params.storeId}/sizes`,
+      label: 'Sizes',
+      active: path === `/${params.storeId}/sizes` || path.includes('sizes'),
+    },
+    {
       href: `/${params.storeId}/settings?tab=general`,
       label: 'Settings',
       active:
