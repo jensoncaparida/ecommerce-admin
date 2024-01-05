@@ -17,6 +17,7 @@ model Store {
   userId String
   banners Banner[]
   categories Category[]
+  brands Brand[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -54,4 +55,16 @@ model Category {
   @@index([storeId])
   @@index([bannerId])
   @@index([parentId])
+}
+
+model Brand {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, storeId])
+  @@index([storeId])
 }

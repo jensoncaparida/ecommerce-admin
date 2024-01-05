@@ -30,6 +30,11 @@ export function MainNav({
         path === `/${params.storeId}/categories` || path.includes('categories'),
     },
     {
+      href: `/${params.storeId}/brands`,
+      label: 'Brands',
+      active: path === `/${params.storeId}/brands` || path.includes('brands'),
+    },
+    {
       href: `/${params.storeId}/settings?tab=general`,
       label: 'Settings',
       active:
