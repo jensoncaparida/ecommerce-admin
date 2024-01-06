@@ -46,6 +46,10 @@ const formSchema = z.object({
   price: z.coerce
     .number()
     .min(1, { message: 'Price must be at least 1 numerical number' }),
+  stock: z.coerce
+    .number()
+    .min(0, { message: 'Stock must be at least 1 numerical number' }),
+  discount: z.coerce.number(),
   categoryId: z.string().min(2, { message: 'Category is required' }),
   brandId: z.string().min(2, { message: 'Brand is required' }),
   sizeId: z.string().min(2, { message: 'Size is required' }),
@@ -93,13 +97,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const defaultValues = initialData
     ? {
         ...initialData,
-        price: parseFloat(String(initialData?.price)),
+        price: parseFloat(initialData.price.toString()),
+        discount: parseFloat(initialData.discount.toString()),
+        stock: parseInt(initialData.stock.toString()),
       }
     : {
         name: '',
         description: '',
         images: [],
         price: 0,
+        stock: 1,
+        discount: 0,
         categoryId: '',
         brandId: '',
         sizeId: '',
@@ -124,8 +132,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       } else {
         await axios.post(`/api/${params.storeId}/products`, data);
       }
-      router.refresh();
       router.push(`/${params.storeId}/products`);
+      router.refresh();
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -138,8 +146,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     try {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
-      router.refresh();
       router.push(`/${params.storeId}/products`);
+      router.refresh();
       toast.success('Product deleted succesfully.');
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -232,6 +240,42 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         type="number"
                         disabled={loading}
                         placeholder="0.00"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="stock"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Stock</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        disabled={loading}
+                        placeholder="0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="discount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Discount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        disabled={loading}
+                        placeholder="99%"
                         {...field}
                       />
                     </FormControl>

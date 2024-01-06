@@ -21,6 +21,8 @@ export async function POST(
       sizeId,
       colorId,
       images,
+      stock,
+      discount,
       isFeatured,
       isArchived,
     } = body;
@@ -93,6 +95,13 @@ export async function POST(
       );
     }
 
+    if (!stock) {
+      return new NextResponse(
+        'Your request is missing a required parameter: "stock".',
+        { status: 400 },
+      );
+    }
+
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
@@ -118,6 +127,8 @@ export async function POST(
         colorId,
         sizeId,
         storeId: params.storeId,
+        stock,
+        discount,
         images: {
           createMany: {
             data: [...images.map((image: { url: string }) => image)],
@@ -140,8 +151,9 @@ export async function GET(
   try {
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get('categoryId') || undefined;
-    const colorId = searchParams.get('colorId') || undefined;
+    const brandId = searchParams.get('brandId') || undefined;
     const sizeId = searchParams.get('sizeId') || undefined;
+    const colorId = searchParams.get('colorId') || undefined;
     const isFeatured = searchParams.get('isFeatured');
 
     if (!params.storeId) {
@@ -155,6 +167,7 @@ export async function GET(
       where: {
         storeId: params.storeId,
         categoryId,
+        brandId,
         colorId,
         sizeId,
         isFeatured: isFeatured ? true : undefined,
@@ -163,8 +176,9 @@ export async function GET(
       include: {
         images: true,
         category: true,
-        color: true,
+        brand: true,
         size: true,
+        color: true,
       },
       orderBy: {
         createdAt: 'desc',

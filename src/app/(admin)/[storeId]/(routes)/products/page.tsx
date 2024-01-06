@@ -36,6 +36,8 @@ async function ProductsPage({
     brand: item.brand.name,
     size: item.size.name,
     color: item.color.value,
+    stock: item.stock,
+    discount: item.discount.toNumber(),
     isFeatured: item.isFeatured,
     isArchived: item.isArchived,
     createdAt: format(item.createdAt, 'MMMM do, yyyy | hh:mm a'),

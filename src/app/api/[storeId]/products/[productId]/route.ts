@@ -53,6 +53,8 @@ export async function PATCH(
       sizeId,
       colorId,
       images,
+      stock,
+      discount,
       isFeatured,
       isArchived,
     } = body;
@@ -132,6 +134,13 @@ export async function PATCH(
       );
     }
 
+    if (!stock) {
+      return new NextResponse(
+        'Your request is missing a required parameter: "stock".',
+        { status: 400 },
+      );
+    }
+
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
@@ -155,6 +164,8 @@ export async function PATCH(
         brandId,
         sizeId,
         colorId,
+        stock,
+        discount,
         images: {
           deleteMany: {},
         },
