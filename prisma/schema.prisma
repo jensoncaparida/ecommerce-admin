@@ -21,6 +21,7 @@ model Store {
   sizes Size[]
   colors Color[]
   products Product[]
+  orders Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -81,6 +82,7 @@ model Product {
   colorId String
   color Color @relation(fields: [colorId], references: [id])
   images Image[]
+  orderItems OrderItem[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -90,6 +92,35 @@ model Product {
   @@index([sizeId])
   @@index([colorId])
 }
+
+model Order {
+  id        String    @id @default(uuid())
+  storeId     String    
+  store       Store     @relation(fields: [storeId], references: [id])
+  name     String
+  email    String
+  phone      String    @default("") 
+  address    String    @default("")
+  isPaid     Boolean   @default(false)
+  orderItems OrderItem[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String  
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+
+  @@index([orderId])
+  @@index([productId])
+}
+
 
 model Brand {
   id String @id @default(uuid())
