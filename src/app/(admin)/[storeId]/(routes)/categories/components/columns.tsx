@@ -9,8 +9,6 @@ export type CategoryColumn = {
   id: string;
   name: string;
   bannerLabel: string;
-  isParent: boolean;
-  relatedEntities: string;
   createdAt: string;
 };
 
@@ -33,16 +31,6 @@ export const columns: ColumnDef<CategoryColumn>[] = [
     accessorKey: 'banner',
     header: 'Banner',
     cell: ({ row }) => row.original.bannerLabel,
-  },
-  {
-    accessorKey: 'isParent',
-    header: 'Type',
-    cell: ({ row }) => (row.original.isParent ? 'Parent' : 'Sub'),
-  },
-  {
-    accessorKey: 'relatedEntities',
-    header: 'Parent Category | Related Entities',
-    cell: ({ row }) => row.original.relatedEntities,
   },
   {
     accessorKey: 'createdAt',

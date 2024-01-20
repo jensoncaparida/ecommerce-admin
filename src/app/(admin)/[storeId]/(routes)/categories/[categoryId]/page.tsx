@@ -25,7 +25,6 @@ export default async function CategoryPage({
   const categories = await prisma.category.findMany({
     where: {
       storeId: params.storeId,
-      isParent: true,
     },
   });
 

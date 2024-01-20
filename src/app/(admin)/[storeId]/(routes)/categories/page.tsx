@@ -17,8 +17,6 @@ async function CategoriesPage({
     },
     include: {
       banner: true,
-      parent: true,
-      children: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -29,10 +27,6 @@ async function CategoriesPage({
     id: item.id,
     name: item.name,
     bannerLabel: item.banner ? item.banner.label : '-',
-    isParent: item.isParent,
-    relatedEntities: item.parent
-      ? item.parent.name
-      : item.children.map((child: any) => child.name).join(', '),
     createdAt: format(item.createdAt, 'MMMM do, yyyy | hh:mm a'),
   }));
 

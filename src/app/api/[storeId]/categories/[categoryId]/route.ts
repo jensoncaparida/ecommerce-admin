@@ -21,7 +21,6 @@ export async function GET(
       },
       include: {
         banner: true,
-        parent: true,
       },
     });
 
@@ -41,7 +40,7 @@ export async function PATCH(
 
     const body = await req.json();
 
-    const { name, bannerId, isParent, parentId } = body;
+    const { name, bannerId } = body;
 
     if (!userId) {
       return new NextResponse('Access Denied. Unauthenticated', {
@@ -77,20 +76,6 @@ export async function PATCH(
       );
     }
 
-    if (!isParent) {
-      return new NextResponse(
-        'Your request is missing a required parameter: "isParent".',
-        { status: 400 },
-      );
-    }
-
-    if (!parentId) {
-      return new NextResponse(
-        'Your request is missing a required parameter: "parentId".',
-        { status: 400 },
-      );
-    }
-
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
@@ -109,8 +94,6 @@ export async function PATCH(
       data: {
         name,
         bannerId: bannerId || null,
-        isParent: isParent || false,
-        parentId: parentId || null,
       },
     });
 

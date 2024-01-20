@@ -48,18 +48,13 @@ model Category {
   bannerId String
   banner Banner? @relation(fields: [bannerId], references: [id])
   name String
-  isParent Boolean @default(false)
-  parentId String
-  parent Category? @relation("ParentChildren", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children Category[] @relation("ParentChildren")
   products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([name, parentId])
+  @@unique([name])
   @@index([storeId])
   @@index([bannerId])
-  @@index([parentId])
 }
 
 model Product {

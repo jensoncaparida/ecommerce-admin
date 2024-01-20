@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-    const { name, bannerId, isParent, parentId } = body;
+    const { name, bannerId } = body;
 
     if (!userId) {
       return new NextResponse('Access Denied. Unauthenticated.', {
@@ -41,20 +41,6 @@ export async function POST(
       );
     }
 
-    if (!isParent) {
-      return new NextResponse(
-        'Your request is missing a required parameter: "isParent".',
-        { status: 400 },
-      );
-    }
-
-    if (!parentId) {
-      return new NextResponse(
-        'Your request is missing a required parameter: "parentId".',
-        { status: 400 },
-      );
-    }
-
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
@@ -72,8 +58,6 @@ export async function POST(
       data: {
         name,
         bannerId: bannerId || null,
-        isParent: isParent || false,
-        parentId: parentId || null,
         storeId: params.storeId,
       },
     });
@@ -97,13 +81,13 @@ export async function GET(
       );
     }
 
-    const categorys = await prisma.category.findMany({
+    const categories = await prisma.category.findMany({
       where: {
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(categorys);
+    return NextResponse.json(categories);
   } catch (error) {
     console.log('[CATEGORIES_GET]', error);
     return new NextResponse('Internal error', { status: 500 });

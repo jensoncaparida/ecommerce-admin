@@ -38,10 +38,6 @@ const formSchema = z.object({
   bannerId: z.string().min(2, {
     message: 'Banner must be selected',
   }),
-  isParent: z.boolean(),
-  parentId: z.string().min(2, {
-    message: 'Parent category must be selected',
-  }),
 });
 
 interface CategoryFormProps {
@@ -77,8 +73,6 @@ export const CategoryForm = ({
     defaultValues: initialData || {
       name: '',
       bannerId: '',
-      isParent: false,
-      parentId: '',
     },
   });
 
@@ -91,14 +85,7 @@ export const CategoryForm = ({
           data,
         );
       } else {
-        if (data.parentId === 'none' || data.parentId === '') {
-          await axios.post(`/api/${params.storeId}/categories`, {
-            ...data,
-            isParent: true,
-          });
-        } else {
-          await axios.post(`/api/${params.storeId}/categories`, data);
-        }
+        await axios.post(`/api/${params.storeId}/categories`, data);
       }
       router.push(`/${params.storeId}/categories`);
       router.refresh();
@@ -218,39 +205,6 @@ export const CategoryForm = ({
                         value={field.value || ''}
                       />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="parentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Parent Category</FormLabel>
-                    <Select
-                      disabled={loading}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder="Select a category"
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="none">none</SelectItem>
-                        {categoriesData.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
