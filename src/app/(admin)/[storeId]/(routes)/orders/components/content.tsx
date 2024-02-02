@@ -33,7 +33,7 @@ export const OrderContent = ({ data }: OrderContentProps) => {
           </Button>
         </div>
         <Separator />
-        <DataTable columns={columns} data={data} searchKey="name" />
+        <DataTable columns={columns} data={data} searchKey="products" />
         <Heading title="API" description="API calls for orders" />
         <Separator />
         <ApiList entityName="orders" entityIdName="orderId" />

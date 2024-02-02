@@ -92,12 +92,10 @@ model Order {
   id        String    @id @default(uuid())
   storeId     String    
   store       Store     @relation(fields: [storeId], references: [id])
-  name     String
-  email    String
   phone      String    @default("") 
   address    String    @default("")
   isPaid     Boolean   @default(false)
-  orderItems OrderItem[]
+  orderItems OrderItem[]  
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 

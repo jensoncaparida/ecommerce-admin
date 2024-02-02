@@ -30,8 +30,6 @@ async function OrdersPage({
 
   const formattedOrders: OrderColumn[] = orders.map((item) => ({
     id: item.id,
-    name: item.name,
-    email: item.email,
     phone: item.phone,
     address: item.address,
     products: item.orderItems
@@ -39,15 +37,10 @@ async function OrdersPage({
       .join(', '),
     totalPrice: formatter.format(
       item.orderItems.reduce((total, item) => {
-        return (
-          total +
-          (item.product.price.toNumber() -
-            (item.product.price.toNumber() * item.product.discount.toNumber()) /
-              100) *
-            item.quantity
-        );
+        return total + Number(item.product.price) * item.quantity;
       }, 0),
     ),
+
     isPaid: item.isPaid,
     createdAt: format(item.createdAt, 'MMMM do, yyyy | hh:mm a'),
   }));
