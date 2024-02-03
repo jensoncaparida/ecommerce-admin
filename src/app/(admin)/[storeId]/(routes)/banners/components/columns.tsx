@@ -15,6 +15,24 @@ export type BannerColumn = {
   createdAt: string;
 };
 
+const ImageCell: React.FC<{ row: any }> = ({ row }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div>
+      <ImageModal
+        imageUrl={row.original.imageUrl}
+        isOpen={open}
+        onClose={() => setOpen(false)}
+      />
+      <Button size="sm" onClick={() => setOpen(true)}>
+        <Eye className="mr-2 h-4 w-4" />
+        View
+      </Button>
+    </div>
+  );
+};
+
 export const columns: ColumnDef<BannerColumn>[] = [
   {
     accessorKey: 'label',
@@ -22,7 +40,7 @@ export const columns: ColumnDef<BannerColumn>[] = [
       return (
         <button
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className="flex items-center space-x-4 cursor-pointer hover:text-black dark:hover:text-white"
+          className="flex cursor-pointer items-center space-x-4 hover:text-black dark:hover:text-white"
         >
           Label
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -33,23 +51,7 @@ export const columns: ColumnDef<BannerColumn>[] = [
   {
     accessorKey: 'imageUrl',
     header: 'Image',
-    cell: ({ row }) => {
-      const [open, setOpen] = useState(false);
-
-      return (
-        <div>
-          <ImageModal
-            imageUrl={row.original.imageUrl}
-            isOpen={open}
-            onClose={() => setOpen(false)}
-          />
-          <Button size="sm" onClick={() => setOpen(true)}>
-            <Eye className="h-4 w-4 mr-2" />
-            View
-          </Button>
-        </div>
-      );
-    },
+    cell: ({ row }) => <ImageCell row={row} />,
   },
   {
     accessorKey: 'createdAt',
