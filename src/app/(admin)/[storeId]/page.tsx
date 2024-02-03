@@ -59,9 +59,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         </Card>
         <Card className="col-span-4">
           <CardHeader>
-            <CardTitle className="text-sm font-semibold">
-              Total Products in Stock
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold">Overview</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
             <OverviewGraph data={revenueGraph} />
